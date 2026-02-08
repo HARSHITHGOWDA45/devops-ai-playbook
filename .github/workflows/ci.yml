@@ -43,9 +43,18 @@ jobs:
      
       - name: Build Docker Image
         run: |
-          IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ matrix.service }}:${{ github.sha }}
-           echo "Building $IMAGE_URI"
-          docker build -t $IMAGE_URI ./services/${{ matrix.service }}
+          if [ "${{ matrix.service }}" == "frontend" ]; then
+            BUILD_PATH="projects/boutique-microservices/frontend"
+          else
+            BUILD_PATH="projects/boutique-microservices/backend/services/${{ matrix.service }}"
+          fi
+
+          echo "Building from $BUILD_PATH"
+
+          docker build \
+            -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.$AWS_REGION.amazonaws.com/${{ matrix.service }}:$IMAGE_TAG \
+          $BUILD_PATH
+
 
       - name: Push Docker Image
         run: |
