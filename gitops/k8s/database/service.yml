@@ -4,9 +4,8 @@ metadata:
   name: boutique-postgres
   namespace: boutique
 spec:
-  ports:
-    - port: 5432
-      targetPort: 5432
-  clusterIP: None   # Headless service for StatefulSet
+  clusterIP: None
   selector:
     app: postgres
+  ports:
+    - port: 5432

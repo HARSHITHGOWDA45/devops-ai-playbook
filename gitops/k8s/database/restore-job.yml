@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: boutique-db-restore
+  namespace: boutique
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: restore
+          image: postgres:15-alpine
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for Postgres..."
+              until pg_isready -h boutique-postgres -U postgres; do
+                sleep 2
+              done
+
+              echo "Restoring dump..."
+              psql -h boutique-postgres -U postgres -f /dump/boutique_full.sql
+
+              echo "Restore completed."
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: boutique-secrets
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: dump
+              mountPath: /dump
+      volumes:
+        - name: dump
+          configMap:
+            name: boutique-db-dump
