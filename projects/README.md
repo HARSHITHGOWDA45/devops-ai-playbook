@@ -17,6 +17,7 @@ This guide outlines the steps to deploy the boutique microservices application o
 > 
 > Go to: **Settings → Secrets and variables → Actions** in your GitHub repository to update them.
 
+> Currently the pipeline is setup for branch name project-demo, to navigate to CI yml file **Actions -> click on any of the runs -> ci.yml 
 ---
 
 ## Prerequisites
