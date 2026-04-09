@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -30,6 +30,7 @@ const Layout: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const { itemCount } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -43,13 +44,13 @@ const Layout: React.FC = () => {
         </Typography>
       </Toolbar>
       <List>
-        <ListItem component="a" href="/">
+        <ListItem component={RouterLink} to="/">
           <ListItemIcon>
             <Home />
           </ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem>
-        <ListItem component="a" href="/products">
+        <ListItem component={RouterLink} to="/products">
           <ListItemIcon>
             <ShoppingBag />
           </ListItemIcon>
@@ -57,13 +58,13 @@ const Layout: React.FC = () => {
         </ListItem>
         {isAuthenticated && (
           <>
-            <ListItem component="a" href="/orders">
+            <ListItem component={RouterLink} to="/orders">
               <ListItemIcon>
                 <ShoppingBag />
               </ListItemIcon>
               <ListItemText primary="Orders" />
             </ListItem>
-            <ListItem component="a" href="/profile">
+            <ListItem component={RouterLink} to="/profile">
               <ListItemIcon>
                 <AccountCircle />
               </ListItemIcon>
@@ -97,7 +98,7 @@ const Layout: React.FC = () => {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Luxury Boutique
           </Typography>
-          <IconButton color="inherit" href="/cart">
+          <IconButton color="inherit" onClick={() => navigate('/cart')}>
             <Badge badgeContent={itemCount} color="error">
               <ShoppingCart />
             </Badge>
@@ -107,7 +108,7 @@ const Layout: React.FC = () => {
               <AccountCircle />
             </IconButton>
           ) : (
-            <IconButton color="inherit" href="/login">
+            <IconButton color="inherit" onClick={() => navigate('/login')}>
               <AccountCircle />
             </IconButton>
           )}

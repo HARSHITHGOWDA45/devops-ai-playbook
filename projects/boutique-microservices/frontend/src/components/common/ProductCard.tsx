@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardMedia,
@@ -40,6 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onQuickView,
   variant = 'grid',
 }) => {
+  const navigate = useNavigate();
   const isOutOfStock = (product.inventory_quantity ?? product.inventory ?? 0) === 0;
 
   // Enhanced image URL handling with fallbacks
@@ -297,7 +299,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <Button
           variant="outlined"
           size="small"
-          href={`/products/${product.id}`}
+          onClick={() => navigate(`/products/${product.id}`)}
           sx={{ width: '100%' }}
         >
           View Details
